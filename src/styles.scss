@@ -199,6 +199,7 @@ $blue-main: #22A7F0;
 .nominal-legend .legend-row .text {
   flex-grow: 1;
   padding: 4px;
+  word-break: break-word;
   line-height: 1;
 }
 
