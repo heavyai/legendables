@@ -1,11 +1,11 @@
-$blue-main: #22A7F0;
+$blue-main: #22a7f0;
 
 .legendables {
   z-index: 1;
   position: absolute;
   left: 8px;
   bottom: 8px;
-  background: rgba(255, 255, 255, .9);
+  background: rgba(255, 255, 255, 0.9);
   border-radius: 2px;
   border: solid 1px #e2e2e2;
   overflow: auto;
@@ -38,7 +38,8 @@ $blue-main: #22A7F0;
       background: url("data:image/svg+xml;utf8, <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><rect x='8' y='8' fill='%23EA5545' width='8' height='8'/><rect x='8' y='20' fill='%2387BC43' width='8' height='8'/><rect x='8' y='32' fill='%233EA3DB' width='8' height='8'/><rect x='20' y='10' fill='%23C7C7C7' width='20' height='4'/><rect x='20' y='22' fill='%23C7C7C7' width='20' height='4'/><rect x='20' y='34' fill='%23C7C7C7' width='20' height='4'/></svg>");
       background-size: cover;
 
-      &:before, &:after {
+      &:before,
+      &:after {
         display: none;
       }
     }
@@ -52,7 +53,8 @@ $blue-main: #22A7F0;
     position: absolute;
     z-index: 5;
 
-    &:before, &:after {
+    &:before,
+    &:after {
       position: absolute;
       width: 2px;
       height: 16px;
@@ -63,19 +65,19 @@ $blue-main: #22A7F0;
     }
 
     &:before {
-      transform: rotate(-45deg) scale(.6);
+      transform: rotate(-45deg) scale(0.6);
     }
 
     &:after {
-      transform: rotate(45deg) scale(.6);
+      transform: rotate(45deg) scale(0.6);
     }
 
     &:hover {
-      &:before, &:after {
-        background: #22A7F0;
+      &:before,
+      &:after {
+        background: #22a7f0;
       }
     }
-
   }
 
   &.show-ticks {
@@ -98,7 +100,7 @@ $blue-main: #22A7F0;
       height: 10px;
       border: 2px solid #a7a7a7;
       content: "";
-      transform: translate(-2px, -2px) scale(.6) rotate(45deg);
+      transform: translate(-2px, -2px) scale(0.6) rotate(45deg);
       border-left: 0;
       border-top: 0;
       position: absolute;
@@ -111,13 +113,25 @@ $blue-main: #22A7F0;
     }
   }
 
+  .sort {
+    position: absolute;
+    right: 14px;
+    top: 4px;
+    fill: #a7a7a7;
+    cursor: pointer;
+
+    &:hover {
+      fill: $blue-main;
+    }
+  }
+
   .header {
     color: #a7a7a7;
     font-weight: bold;
     margin: 0 4px 0 4px;
     position: relative;
     height: 24px;
-    padding-right: 24px;
+    padding-right: 32px;
     border-bottom: 1px solid #e2e2e2;
   }
 
@@ -129,10 +143,9 @@ $blue-main: #22A7F0;
   }
 
   .legend {
-
     &.open {
       .tick:after {
-        transform: translate(-1px, 0) scale(.6) rotate(-135deg);
+        transform: translate(-1px, 0) scale(0.6) rotate(-135deg);
       }
     }
 
@@ -142,12 +155,15 @@ $blue-main: #22A7F0;
       }
     }
 
-  &:nth-child(2) {
+    &:nth-child(2) {
       .tick {
-          right: 16px;
+        right: 16px;
+      }
+      .sort {
+        right: 34px;
       }
       .header {
-        padding-right: 36px;
+        padding-right: 48px;
       }
     }
   }
@@ -203,10 +219,7 @@ $blue-main: #22A7F0;
   line-height: 1;
 }
 
-
-
 .gradient-legend.legendables {
-
 }
 
 .gradient-legend .range {
@@ -238,7 +251,7 @@ $blue-main: #22A7F0;
   color: #868686;
   font-size: 10px;
   padding: 2px 2px 0 2px;
-  background: hsla(0,0%,100%,.4);
+  background: hsla(0, 0%, 100%, 0.4);
 }
 
 .gradient-legend .block .step {
@@ -265,7 +278,6 @@ $blue-main: #22A7F0;
   overflow: visible;
   outline: none;
 }
-
 
 .gradient-legend .lock {
   width: 15px;
@@ -329,7 +341,7 @@ $blue-main: #22A7F0;
     }
 
     .block:not(:hover) .color {
-      opacity: .4;
+      opacity: 0.4;
     }
   }
 
@@ -352,4 +364,3 @@ $blue-main: #22A7F0;
     }
   }
 }
-
