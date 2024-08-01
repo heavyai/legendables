@@ -1,6 +1,8 @@
-import Legend from "../src/legend"
+import Legend from "../src/legend";
 
-const gradient = new Legend(document.getElementById("gradient-legend-container"))
+const gradient = new Legend(
+  document.getElementById("gradient-legend-container")
+);
 gradient.setState({
   type: "stacked",
   width: 50,
@@ -12,17 +14,8 @@ gradient.setState({
       locked: true,
       width: 50,
       height: 100,
-      domain: [
-        0, 100
-      ],
-      range: [
-        "#ea5545",
-        "#f46a9b",
-        "#ef9b20",
-        "#edbf33",
-        "#ede15b",
-        "#bdcf32"
-      ]
+      domain: [0, 100],
+      range: ["#ea5545", "#f46a9b", "#ef9b20", "#edbf33", "#ede15b", "#bdcf32"]
     },
     {
       title: "Legend",
@@ -37,14 +30,7 @@ gradient.setState({
         "Staten Island",
         "Other"
       ],
-      range: [
-        "#ea5545",
-        "#f46a9b",
-        "#ef9b20",
-        "#edbf33",
-        "#ede15b",
-        "#bdcf32"
-      ]
+      range: ["#ea5545", "#f46a9b", "#ef9b20", "#edbf33", "#ede15b", "#bdcf32"]
     },
     {
       title: "Legend",
@@ -52,17 +38,8 @@ gradient.setState({
       locked: false,
       width: 50,
       height: 100,
-      domain: [
-        0, 100
-      ],
-      range: [
-        "#ea5545",
-        "#f46a9b",
-        "#ef9b20",
-        "#edbf33",
-        "#ede15b",
-        "#bdcf32"
-      ]
+      domain: [0, 100],
+      range: ["#ea5545", "#f46a9b", "#ef9b20", "#edbf33", "#ede15b", "#bdcf32"]
     },
     {
       title: "amount[contributions]",
@@ -78,48 +55,40 @@ gradient.setState({
         "Staten Island",
         "Other"
       ],
-      range: [
-        "#ea5545",
-        "#f46a9b",
-        "#ef9b20",
-        "#edbf33",
-        "#ede15b",
-        "#bdcf32"
-      ]
+      range: ["#ea5545", "#f46a9b", "#ef9b20", "#edbf33", "#ede15b", "#bdcf32"]
     }
   ]
-})
+});
 
-gradient.on("lock", function input ({locked, index}) {
+gradient.on("lock", function input({ locked, index }) {
   gradient.setState(state => {
-    const list = state.list.slice()
-    list[index].locked = !locked
+    const list = state.list.slice();
+    list[index].locked = !locked;
     return {
       ...state,
       list
-    }
-  })
-})
+    };
+  });
+});
 
-
-gradient.on("input", function input ({domain, index}) {
+gradient.on("input", function input({ domain, index }) {
   gradient.setState(state => {
-    const list = state.list.slice()
-    list[index].domain = domain
+    const list = state.list.slice();
+    list[index].domain = domain;
     return {
       ...state,
       list
-    }
-  })
-})
+    };
+  });
+});
 
-gradient.on("open", (index) => {
+gradient.on("open", index => {
   gradient.setState(state => {
-    const list = state.list.slice()
-    list[index].open = !list[index].open
+    const list = state.list.slice();
+    list[index].open = !list[index].open;
     return {
       ...state,
       list
-    }
-  })
-})
+    };
+  });
+});

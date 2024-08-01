@@ -1,22 +1,32 @@
-import uglify from "rollup-plugin-uglify";
-import resolve from "rollup-plugin-node-resolve";
-import commonjs from "rollup-plugin-commonjs";
-import typescript from "rollup-plugin-typescript";
+import resolve from "@rollup/plugin-node-resolve";
+import commonjs from "@rollup/plugin-commonjs";
+import sucrase from "@rollup/plugin-sucrase";
+import { babel } from "@rollup/plugin-babel";
+import { terser } from "rollup-plugin-terser";
 
-var env = process.env.NODE_ENV;
-var config = {
-  format: "umd",
-  moduleName: "Legendables",
+const env = process.env.NODE_ENV;
+const config = {
+  input: "index.ts",
+  output: {
+    file: "dist/legendables.js",
+    format: "umd",
+    name: "Legendables"
+  },
   plugins: [
-    typescript(),
+    sucrase({ exclude: ["node_modules/**"], transforms: ["typescript"] }),
     commonjs(),
-    resolve()
+    resolve(),
+    babel({
+      babelHelpers: "bundled",
+      exclude: "node_modules/**",
+      extensions: [".js", ".ts"]
+    })
   ]
 };
 
 if (env === "production") {
   config.plugins.push(
-    uglify({
+    terser({
       compress: {
         pure_getters: true,
         unsafe: true,

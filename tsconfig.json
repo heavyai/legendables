@@ -1,18 +1,11 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "esnext",
     "target": "ES5",
     "sourceMap": true,
-    "lib": [
-      "dom",
-      "es5",
-      "es2015.core"
-    ]
+    "lib": ["dom", "es5", "es2015.core"],
+    "strict": false
   },
-  "include": [
-    "example/index.ts",
-    "src/legend.ts",
-    "src/vdom.ts",
-    "index.ts"
-  ]
+  "include": ["example/index.ts", "src/legend.ts", "src/vdom.ts", "index.ts"],
+  "exclude": ["node_modules"]
 }
