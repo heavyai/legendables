@@ -199,7 +199,18 @@ export function renderGradientLegend(state, dispatch) {
 export function renderNominalLegend(state, dispatch) {
     var _this = this;
     var stacked = typeof state.index === "number";
-    return h("div.legend.nominal-legend" + (stacked ? "" : ".legendables") + (state.open ? ".open" : ".collapsed") + (state.position ? "." + state.position : ""), [
+    return h("div.legend.nominal-legend" + (stacked ? "" : ".legendables") + (state.open ? ".open" : ".collapsed") + (state.position ? "." + state.position : ""), {
+        on: {
+            scroll: function (event) {
+                var target = event.target;
+                if (target.scrollHeight - target.scrollTop <=
+                    target.clientHeight + 10) {
+                    // Reached the bottom
+                    dispatch.call("fetchDomain", _this, state.index ? state.index : 0, state.page ? state.page++ : 1);
+                }
+            }
+        }
+    }, [
         !stacked ? renderToggleIcon(state, dispatch) : h("div"),
         state.title &&
             h("div.header", [
@@ -257,7 +268,7 @@ var Legend = /** @class */ (function () {
             return _this.node;
         };
         this.node = node;
-        this.dispatch = dispatch("filter", "input", "open", "lock", "toggle", "doneRender", "sort");
+        this.dispatch = dispatch("filter", "input", "open", "lock", "toggle", "doneRender", "sort", "fetchDomain");
         this.state = null;
     }
     Legend.prototype.on = function (event, callback) {
