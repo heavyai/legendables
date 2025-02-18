@@ -267,28 +267,25 @@ export function renderNominalLegend(
 ): VNode {
   const stacked = typeof state.index === "number";
 
+  const handleScroll = (event: Event) => {
+    const target = event.target as HTMLElement;
+    if (target.scrollHeight - target.scrollTop <= target.clientHeight + 10) {
+      // Reached the bottom
+      dispatch.call(
+        "fetchDomain",
+        this,
+        state.index ? state.index : 0,
+        state.page ? state.page++ : 1
+      );
+    }
+  };
+
   return h(
     `div.legend.nominal-legend${stacked ? "" : ".legendables"}${
       state.open ? ".open" : ".collapsed"
     }${state.position ? `.${state.position}` : ""}`,
     {
-      on: {
-        scroll: (event: Event) => {
-          const target = event.target as HTMLElement;
-          if (
-            target.scrollHeight - target.scrollTop <=
-            target.clientHeight + 10
-          ) {
-            // Reached the bottom
-            dispatch.call(
-              "fetchDomain",
-              this,
-              state.index ? state.index : 0,
-              state.page ? state.page++ : 1
-            );
-          }
-        }
-      }
+      on: !stacked ? { scroll: handleScroll } : {}
     },
     [
       !stacked ? renderToggleIcon(state, dispatch) : h("div"),
@@ -301,6 +298,9 @@ export function renderNominalLegend(
       state.open
         ? h(
             "div.body",
+            {
+              on: stacked ? { scroll: handleScroll } : {}
+            },
             state.domain.map((value, index) =>
               h(
                 "div.legend-row",

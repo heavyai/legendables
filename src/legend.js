@@ -199,17 +199,15 @@ export function renderGradientLegend(state, dispatch) {
 export function renderNominalLegend(state, dispatch) {
     var _this = this;
     var stacked = typeof state.index === "number";
-    return h("div.legend.nominal-legend" + (stacked ? "" : ".legendables") + (state.open ? ".open" : ".collapsed") + (state.position ? "." + state.position : ""), {
-        on: {
-            scroll: function (event) {
-                var target = event.target;
-                if (target.scrollHeight - target.scrollTop <=
-                    target.clientHeight + 10) {
-                    // Reached the bottom
-                    dispatch.call("fetchDomain", _this, state.index ? state.index : 0, state.page ? state.page++ : 1);
-                }
-            }
+    var handleScroll = function (event) {
+        var target = event.target;
+        if (target.scrollHeight - target.scrollTop <= target.clientHeight + 10) {
+            // Reached the bottom
+            dispatch.call("fetchDomain", _this, state.index ? state.index : 0, state.page ? state.page++ : 1);
         }
+    };
+    return h("div.legend.nominal-legend" + (stacked ? "" : ".legendables") + (state.open ? ".open" : ".collapsed") + (state.position ? "." + state.position : ""), {
+        on: !stacked ? { scroll: handleScroll } : {}
     }, [
         !stacked ? renderToggleIcon(state, dispatch) : h("div"),
         state.title &&
@@ -219,7 +217,9 @@ export function renderNominalLegend(state, dispatch) {
                 renderTickIcon(state, dispatch)
             ]),
         state.open
-            ? h("div.body", state.domain.map(function (value, index) {
+            ? h("div.body", {
+                on: stacked ? { scroll: handleScroll } : {}
+            }, state.domain.map(function (value, index) {
                 return h("div.legend-row", { on: { click: function () { return dispatch.call("filter", _this, value); } } }, [
                     h("div.color", {
                         style: { background: state.range[index] }
