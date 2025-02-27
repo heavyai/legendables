@@ -1440,7 +1440,22 @@
   function renderNominalLegend(state, dispatch) {
     var _this6 = this;
     var stacked = typeof state.index === "number";
-    return _default("div.legend.nominal-legend".concat(stacked ? "" : ".legendables").concat(state.open ? ".open" : ".collapsed").concat(state.position ? ".".concat(state.position) : ""), [!stacked ? renderToggleIcon(state, dispatch) : _default("div"), state.title && _default("div.header", [_default("div.title-text", state.title), renderSortIcon(state, dispatch), renderTickIcon(state, dispatch)]), state.open ? _default("div.body", state.domain.map(function (value, index) {
+    var handleScroll = function handleScroll(event) {
+      var target = event.target;
+      if (target.scrollHeight - target.scrollTop <= target.clientHeight + 10) {
+        // Reached the bottom
+        dispatch.call("fetchDomain", _this6, state.index ? state.index : 0, state.page ? state.page++ : 1);
+      }
+    };
+    return _default("div.legend.nominal-legend".concat(stacked ? "" : ".legendables").concat(state.open ? ".open" : ".collapsed").concat(state.position ? ".".concat(state.position) : ""), {
+      on: !stacked ? {
+        scroll: handleScroll
+      } : {}
+    }, [!stacked ? renderToggleIcon(state, dispatch) : _default("div"), state.title && _default("div.header", [_default("div.title-text", state.title), renderSortIcon(state, dispatch), renderTickIcon(state, dispatch)]), state.open ? _default("div.body", {
+      on: stacked ? {
+        scroll: handleScroll
+      } : {}
+    }, state.domain.map(function (value, index) {
       return _default("div.legend-row", {
         on: {
           click: function click() {
@@ -1476,7 +1491,7 @@
       _classCallCheck(this, Legend);
       Legend.prototype.__init.call(this);
       this.node = node;
-      this.dispatch = dispatch("filter", "input", "open", "lock", "toggle", "doneRender", "sort");
+      this.dispatch = dispatch("filter", "input", "open", "lock", "toggle", "doneRender", "sort", "fetchDomain");
       this.state = null;
     }
     return _createClass(Legend, [{
