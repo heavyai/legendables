@@ -1,6 +1,5 @@
 // Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
-
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -12,12 +11,14 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-var __spreadArrays = (this && this.__spreadArrays) || function () {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
 };
 import h from "snabbdom/h";
 import { patch } from "./vdom";
@@ -52,7 +53,7 @@ function rangeStep(domain, index, bins) {
 }
 function validateNumericalInput(previousValue, nextValue) {
     if (isNaN(parseFloat(nextValue))) {
-        return parseFloat(previousValue);
+        return previousValue;
     }
     else {
         return parseFloat(nextValue);
@@ -76,8 +77,8 @@ function renderToggleIcon(state, dispatch) {
 }
 function renderLockIcon(locked, index, dispatch) {
     var _this = this;
-    return h("div.lock" + (locked ? ".locked" : ".unlocked"), { on: { click: function () { return dispatch.call("lock", _this, { locked: locked, index: index }); } } }, [
-        h("svg", { attrs: { viewBox: [0, 0, 48, 48] } }, [
+    return h("div.lock".concat(locked ? ".locked" : ".unlocked"), { on: { click: function () { return dispatch.call("lock", _this, { locked: locked, index: index }); } } }, [
+        h("svg", { attrs: { viewBox: "0 0 48 48" } }, [
             h("g", { style: { stroke: "white" } }, [
                 h("path", {
                     attrs: {
@@ -143,7 +144,8 @@ function renderInput(state, domain, dispatch) {
                 e.target.select();
             },
             blur: function (e) {
-                var value = validateNumericalInput(domain.value, e.target.value);
+                var target = e.target;
+                var value = validateNumericalInput(domain.value, target.value);
                 var _a = state.domain, min = _a[0], max = _a[1];
                 dispatch.call("input", _this, {
                     index: state.index,
@@ -160,7 +162,7 @@ function renderInput(state, domain, dispatch) {
 }
 export function renderGradientLegend(state, dispatch) {
     var stacked = typeof state.index === "number";
-    return h("div.legend.gradient-legend" + (stacked ? ".with-header" : ".legendables") + (state.open ? ".open" : ".collapsed") + (state.position ? "." + state.position : ""), [
+    return h("div.legend.gradient-legend".concat(stacked ? ".with-header" : ".legendables").concat(state.open ? ".open" : ".collapsed").concat(state.position ? ".".concat(state.position) : ""), [
         stacked
             ? h("div.header", [
                 h("div.title-text", state.title),
@@ -168,7 +170,7 @@ export function renderGradientLegend(state, dispatch) {
             ])
             : h("div"),
         state.open
-            ? h("div.range", __spreadArrays(state.range.map(function (color, index) {
+            ? h("div.range", __spreadArray([], state.range.map(function (color, index) {
                 var isMinMax = index === 0 || index === state.range.length - 1;
                 var step = Array.isArray(state.domain)
                     ? formatNumber(rangeStep(state.domain, index, state.range.length))
@@ -179,8 +181,8 @@ export function renderGradientLegend(state, dispatch) {
                 var min = domain[0], max = domain[1];
                 return h("div.block", [
                     h("div.color", { style: { background: color } }),
-                    h("div.text." + (isMinMax ? "extent" : "step"), [
-                        h("span", "" + (domain.length > 2 ? domain[index] : step))
+                    h("div.text.".concat(isMinMax ? "extent" : "step"), [
+                        h("span", "".concat(domain.length > 2 ? domain[index] : step))
                     ].concat(isMinMax
                         ? [
                             renderInput(state, {
@@ -192,7 +194,7 @@ export function renderGradientLegend(state, dispatch) {
                         ]
                         : []))
                 ]);
-            })))
+            }), true))
             : h("div"),
         state.open
             ? renderLockIcon(state.locked, state.index, dispatch)
@@ -209,7 +211,7 @@ export function renderNominalLegend(state, dispatch) {
             dispatch.call("fetchDomain", _this, state.index ? state.index : 0, state.page ? state.page++ : 1);
         }
     };
-    return h("div.legend.nominal-legend" + (stacked ? "" : ".legendables") + (state.open ? ".open" : ".collapsed") + (state.position ? "." + state.position : ""), {
+    return h("div.legend.nominal-legend".concat(stacked ? "" : ".legendables").concat(state.open ? ".open" : ".collapsed").concat(state.position ? ".".concat(state.position) : ""), {
         on: !stacked ? { scroll: handleScroll } : {}
     }, [
         !stacked ? renderToggleIcon(state, dispatch) : h("div"),
@@ -227,14 +229,14 @@ export function renderNominalLegend(state, dispatch) {
                     h("div.color", {
                         style: { background: state.range[index] }
                     }),
-                    h("div.text", "" + value)
+                    h("div.text", "".concat(value))
                 ]);
             }))
             : h("div")
     ]);
 }
 export function renderStackedLegend(state, dispatch) {
-    return h("div.legendables" + (state.open ? ".open" : ".collapsed") + (state.list.length > 1 ? ".show-ticks" : ""), { style: { maxHeight: state.maxHeight + "px" } }, [renderToggleIcon(state, dispatch)].concat(state.list.map(function (legend, index) {
+    return h("div.legendables".concat(state.open ? ".open" : ".collapsed").concat(state.list.length > 1 ? ".show-ticks" : ""), { style: { maxHeight: "".concat(state.maxHeight, "px") } }, [renderToggleIcon(state, dispatch)].concat(state.list.map(function (legend, index) {
         if (legend.type === "gradient") {
             return renderGradientLegend(__assign(__assign({}, legend), { index: index }), dispatch);
         }
