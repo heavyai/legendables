@@ -1,3 +1,6 @@
+// Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+// SPDX-License-Identifier: Apache-2.0
+
 import h from "snabbdom/h";
 import { patch } from "./vdom";
 import { VNode } from "snabbdom/vnode";
