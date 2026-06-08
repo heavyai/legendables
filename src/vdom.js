@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+// SPDX-License-Identifier: Apache-2.0
 import { init } from "snabbdom";
 import attributesModule from "snabbdom/modules/attributes";
 import classModule from "snabbdom/modules/class";

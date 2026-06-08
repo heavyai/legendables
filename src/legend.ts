@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+// SPDX-License-Identifier: Apache-2.0
+
 import h from "snabbdom/h";
 import { patch } from "./vdom";
 import { VNode } from "snabbdom/vnode";
@@ -25,7 +28,7 @@ export interface NominalLegendState {
   height?: number;
   open?: boolean;
   range: Array<string>;
-  domain: [string, boolean];
+  domain: string[];
   position?: "top-right" | "bottom-left";
   page?: number;
 }
@@ -72,7 +75,7 @@ function rangeStep(domain: [number, number], index: number, bins: number = 9) {
 
 function validateNumericalInput(previousValue: number, nextValue: any): number {
   if (isNaN(parseFloat(nextValue))) {
-    return parseFloat(previousValue);
+    return previousValue;
   } else {
     return parseFloat(nextValue);
   }
@@ -99,7 +102,7 @@ function renderLockIcon(locked, index, dispatch) {
     `div.lock${locked ? ".locked" : ".unlocked"}`,
     { on: { click: () => dispatch.call("lock", this, { locked, index }) } },
     [
-      h("svg", { attrs: { viewBox: [0, 0, 48, 48] } }, [
+      h("svg", { attrs: { viewBox: "0 0 48 48" } }, [
         h("g", { style: { stroke: "white" } }, [
           h("path", {
             attrs: {
@@ -169,7 +172,7 @@ function renderInput(state: GradientLegendState, domain, dispatch): VNode {
   return h("input", {
     hook: {
       update: (prevNode: VNode, nextNode: VNode) => {
-        nextNode.elm.value = domain.value;
+        (nextNode.elm as HTMLInputElement).value = domain.value;
       }
     },
     props: {
@@ -177,10 +180,11 @@ function renderInput(state: GradientLegendState, domain, dispatch): VNode {
     },
     on: {
       focus: e => {
-        e.target.select();
+        (e.target as HTMLInputElement).select();
       },
       blur: e => {
-        const value = validateNumericalInput(domain.value, e.target.value);
+        const target = e.target as HTMLInputElement;
+        const value = validateNumericalInput(domain.value, target.value);
         const [min, max] = state.domain;
         dispatch.call("input", this, {
           index: state.index,
@@ -189,7 +193,7 @@ function renderInput(state: GradientLegendState, domain, dispatch): VNode {
       },
       keydown: e => {
         if (e.code === "Enter") {
-          e.target.blur();
+          (e.target as HTMLInputElement).blur();
         }
       }
     }
@@ -357,7 +361,7 @@ export default class Legend {
     this.state = null;
   }
 
-  on(event: string, callback: () => void) {
+  on(event: string, callback: (...args: any[]) => void) {
     this.dispatch.on(event, callback);
   }
 
@@ -381,7 +385,7 @@ export default class Legend {
     }
 
     this.node = patch(this.node, vnode);
-    this.dispatch.call("doneRender", this, state);
+    this.dispatch.call("doneRender", this as unknown as EventTarget, state);
 
     return this.node;
   };
