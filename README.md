@@ -1,5 +1,12 @@
 # legendables
 
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/heavyai/legendables/blob/master/LICENSE)
+[![Security](https://img.shields.io/badge/Security-Report%20a%20Vulnerability-red.svg)](https://github.com/heavyai/legendables/blob/master/SECURITY.md)
+[![GitHub Discussions](https://img.shields.io/badge/GitHub-Discussions-blue?logo=github)](https://github.com/orgs/heavyai/discussions)
+
+
+
+
 # Third-party vendor licenses
 
 A full list of third-party npm packages and their licenses is maintained in [`license/THIRD_PARTY_LICENSES.md`](license/THIRD_PARTY_LICENSES.md). To regenerate it after dependency changes, run:
@@ -14,3 +21,14 @@ Every third-party module from npm that gets includes in the final, distributed b
 
 License descriptions and public license URLs are maintained in licenses.json as well, but they are not verified and might not be up to date.
 
+# Security
+> [!WARNING]
+> **Do not report security vulnerabilities through public GitHub issues!**
+
+NVIDIA takes security seriously. If you discover a vulnerability in legendables, **DO NOT open a public issue**. Use one of the private reporting channels described in [SECURITY.md](https://github.com/heavyai/legendables/blob/master/SECURITY.md).
+
+# Support
+Join the [HeavyAI GitHub Discussions](https://github.com/orgs/heavyai/discussions) to ask questions, share feedback, and report issues. HeavyAI maintainers review issues, discussions, and pull requests on a best effort basis without guaranteed response timelines.
+  
+# License
+Apache 2.0. See [LICENSE](https://github.com/heavyai/legendables/blob/master/LICENSE).
